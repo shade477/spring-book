@@ -6,6 +6,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.context.annotation.Lazy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,8 +17,12 @@ import java.util.List;
 public class StudentDAOImpl implements StudentDAO {
 
     // Using @PersistenceContext as entitymanager is managed by JPA and spring automatically injects one without constructor
-    @PersistenceContext
     private EntityManager em;
+
+    @Autowired
+    public StudentDAOImpl(EntityManager theEntityManager) {
+        em = theEntityManager;
+    }
 
     @Override
     @Transactional
