@@ -18,8 +18,8 @@ public class StudentController {
     private StudentService studentService;
 
     @Autowired
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
+    public StudentController(StudentService thestudentService) {
+        studentService = thestudentService;
     }
 
     @GetMapping("/id/{id}")
