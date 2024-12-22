@@ -5,6 +5,8 @@ import com.example.demo.dao.StudentDAOImpl;
 import com.example.demo.entity.Student;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +22,7 @@ public class StudentServiceImpl implements StudentService{
         studentDAO = theStudentDAO;
     }
 
-//     define @PostConstruct to load the student data ... only once!
+//     define @PostConstruct to load the student data ... only once! it does not work when writing to db is involved
 //    @PostConstruct
 //    private void loadData() {
 //
@@ -28,6 +30,17 @@ public class StudentServiceImpl implements StudentService{
 //        studentDAO.save(new Student("Mario", "Rossi", "mrossi@lol.com"));
 //        studentDAO.save(new Student("Mary", "Smith", "msmith@lol.com"));
 //    }
+
+    // Using EventListener for transactional support
+    @EventListener(ApplicationReadyEvent.class)
+    @Transactional
+    protected void loadData() {
+
+        studentDAO.save(new Student("Poornima", "Patel", "ppatel@lol.com"));
+        studentDAO.save(new Student("Mario", "Rossi", "mrossi@lol.com"));
+        studentDAO.save(new Student("Mary", "Smith", "msmith@lol.com"));
+
+    }
 
     //Return a Student Name by id
     public String getName(int id) {
