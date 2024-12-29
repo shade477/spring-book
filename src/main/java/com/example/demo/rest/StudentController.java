@@ -4,6 +4,8 @@ import com.example.demo.entity.Student;
 import com.example.demo.service.StudentService;
 //import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,18 +37,26 @@ public class StudentController {
     }
 
     @PostMapping("/")
-    public void addStudent(@RequestBody Student student){
-        studentService.addStudent(student);
+    public ResponseEntity<Student> addStudent(@RequestBody Student student){
+        return new ResponseEntity<>(studentService.addStudent(student),HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/id/{id}")
-    public void deleteStudent(@PathVariable int id) {
+    public ResponseEntity<Student> deleteStudent(@PathVariable int id) {
         studentService.deleteStudent(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/")
     public void updateStudent(@RequestBody Student student) {
         studentService.updateStudent(student);
+    }
+
+    @PutMapping("/id/{id}")
+    public ResponseEntity<Student> updateStudent(@PathVariable int id, @RequestBody Student student) {
+        student.setRollNo(id);
+        studentService.updateStudent(student);
+        return new ResponseEntity<>(student, HttpStatus.NO_CONTENT);
     }
 
 }
